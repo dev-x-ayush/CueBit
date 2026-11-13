@@ -63,6 +63,43 @@ function closeComposer() {
   composer = undefined;
 }
 
+function stopPlayerShortcutsWhileComposing(event: KeyboardEvent) {
+  if (composer?.contains(event.target as Node)) {
+    if (event.type === 'keydown' && event.key === 'Enter' && event.ctrlKey && !event.altKey && !event.metaKey) {
+      event.preventDefault();
+      if (!event.repeat) composer.querySelector<HTMLFormElement>('.mn-composer-form')?.requestSubmit();
+    }
+    // YouTube listens for player shortcuts above the composer in the event tree.
+    // Stop the event from reaching those handlers without cancelling the browser's
+    // default editing behavior (including inserting spaces in the textarea).
+    event.stopImmediatePropagation();
+  }
+}
+
+function openComposerFromShortcut(event: KeyboardEvent) {
+  if (
+    event.key.toLowerCase() !== 'b'
+    || event.repeat
+    || event.altKey
+    || event.ctrlKey
+    || event.metaKey
+    || composer
+    || !currentVideoId()
+    || !getVideo()
+  ) return;
+
+  const target = event.target;
+  if (target instanceof HTMLElement && (
+    target.isContentEditable
+    || target.closest('input, textarea, select, [role="textbox"]')
+  )) return;
+
+  // Claim the key so YouTube doesn't interpret it as a player shortcut.
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  openComposer();
+}
+
 function openComposer() {
   closeComposer();
   const player = document.querySelector<HTMLElement>('#movie_player');
@@ -77,7 +114,8 @@ function openComposer() {
       <button class="mn-composer-close" type="button" aria-label="Close note form">×</button>
     </header>
     <form class="mn-composer-form">
-      <textarea class="mn-composer-text" maxlength="500" required placeholder="What do you want to remember here?"></textarea>
+      <textarea class="mn-composer-text" maxlength="500" required aria-keyshortcuts="Control+Enter" placeholder="What do you want to remember here?"></textarea>
+      <p class="mn-composer-hint">Ctrl + Enter to save</p>
       <p class="mn-composer-error" hidden></p>
       <footer class="mn-composer-actions">
         <button class="mn-composer-cancel" type="button">Cancel</button>
@@ -134,8 +172,8 @@ function ensureTimelineButton() {
   button.id = 'moment-notes-add-button';
   button.type = 'button';
   button.className = 'ytp-button moment-notes-add-button';
-  button.title = 'Add a note at the current time';
-  button.setAttribute('aria-label', 'Add a note at the current time');
+  button.title = 'Add a note at the current time (B)';
+  button.setAttribute('aria-label', 'Add a note at the current time (B)');
   button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.75h12a1.25 1.25 0 0 1 1.25 1.25v15l-7.25-4.5-7.25 4.5V5A1.25 1.25 0 0 1 6 3.75Z"/><path d="M12 7v6M9 10h6"/></svg>';
   button.addEventListener('click', (event) => {
     event.preventDefault();
@@ -209,6 +247,11 @@ export default defineContentScript({
   matches: ['https://www.youtube.com/*'],
   runAt: 'document_idle',
   main() {
+    // Capture before YouTube's document-level keyboard shortcuts. Do not call
+    // preventDefault here: text editing in the composer must remain native.
+    window.addEventListener('keydown', stopPlayerShortcutsWhileComposing, true);
+    window.addEventListener('keyup', stopPlayerShortcutsWhileComposing, true);
+    window.addEventListener('keydown', openComposerFromShortcut, true);
     browser.runtime.onMessage.addListener((message: ExtensionMessage, _sender, sendResponse) => {
       if (message.type === 'video:get-snapshot') {
         sendResponse(getSnapshot());
@@ -233,3 +276,4 @@ export default defineContentScript({
     window.addEventListener('popstate', scheduleRefresh);
   },
 });
+

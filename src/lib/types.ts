@@ -24,8 +24,10 @@ export type ExtensionMessage =
   | { type: 'video:get-snapshot' }
   | { type: 'video:seek'; seconds: number }
   | { type: 'video:refresh-notes' }
+  | { type: 'video:open-composer' }
   | { type: 'video:get-notes'; videoId: string };
 
+// Legacy name kept on purpose: changing it would hide notes saved before the rename.
 export const DB_NAME = 'youtube-moment-notes';
 export const DB_VERSION = 1;
 export const STORE_NAME = 'notes';

@@ -4,22 +4,25 @@
 
 ```text
 entrypoints/
-  background/index.ts       Extension background worker and note message handling
+  background/index.ts       Extension background worker, note message handling, and the Alt+Shift+N command
   popup/                    Toolbar popup interface
   dashboard/                Full notes library and timeline visualization
   youtube.content/          YouTube player button, note form, and seek-bar markers
 src/
   components/ui/            Shared React controls
+  components/logo.tsx       CueBit logo mark
   lib/database.ts           IndexedDB operations using idb
   lib/messaging.ts          Helpers for communicating between extension parts
   lib/types.ts              Note schema and message types
-  styles/global.css         Shared UI styles
-docs/                       User and project guides
+  styles/global.css         Design tokens, fonts, and shared UI styles
+public/icon/                Extension icons (16 to 128 px)
+docs/                       User, design, and project guides
+CHANGELOG.md                Version history
 package.json                Scripts and dependency declarations
 pnpm-lock.yaml              Locked dependency versions for pnpm installs
 pnpm-workspace.yaml         pnpm workspace/build configuration
 tsconfig.json               TypeScript compiler configuration
-wxt.config.ts               WXT, browser permissions, React, and Tailwind setup
+wxt.config.ts               WXT, manifest (permissions, icons, keyboard command), React, and Tailwind setup
 ```
 
 ## Generated and local-only files
@@ -37,7 +40,7 @@ The YouTube content script reads the current watch-page video and timestamp. The
 
 ## Browser permissions
 
-The manifest requests `activeTab` and `scripting` for access to the active tab and content-script setup, and `https://www.youtube.com/*` host access so player integration can run on YouTube pages. It does not request access to other sites or a remote API.
+The manifest requests `activeTab` and `scripting` for access to the active tab and content-script setup, and `https://www.youtube.com/*` host access so player integration can run on YouTube pages. It also declares the `add-note` keyboard command (default `Alt+Shift+N`), which needs no extra permission. It does not request access to other sites or a remote API.
 
 ## Changing the database
 

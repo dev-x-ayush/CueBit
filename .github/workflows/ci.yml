@@ -1,0 +1,17 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - name: Type check
+        run: npx tsc --noEmit
+      - name: Build extension
+        run: npm run build
+      - name: Validate manifest JSON
+        run: node -e "JSON.parse(require('fs').readFileSync('.output/chrome-mv3/manifest.json','utf8'))"

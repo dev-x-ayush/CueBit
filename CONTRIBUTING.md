@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve YouTube Moment Notes. Contributions may include bug reports, documentation improvements, accessibility fixes, browser compatibility work, or new features.
+Thanks for helping improve CueBit. Contributions may include bug reports, documentation improvements, accessibility fixes, browser compatibility work, or new features.
 
 ## Before opening an issue
 
@@ -20,7 +20,8 @@ Useful scripts are listed in the root README. Keep generated output and installe
 ## Pull requests
 
 - Keep changes focused and explain the user-facing reason for the change.
-- Update documentation when behavior, setup, permissions, or data handling changes.
+- Update documentation when behavior, setup, permissions, or data handling changes, and add an entry to `CHANGELOG.md`.
+- Follow `docs/DESIGN.md` for colours, type and components.
 - Do not commit personal data, browser profiles, credentials, private notes, `node_modules/`, or `.output/`.
 - Describe the browsers and manual steps used to verify the change. If you did not verify it in a browser, state that clearly.
 

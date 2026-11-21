@@ -2,46 +2,57 @@
   position: relative !important;
 }
 
-#moment-notes-marker-layer {
+#cuebit-marker-layer {
   position: absolute;
   z-index: 40;
   inset: 0;
   pointer-events: none;
 }
 
-.moment-notes-marker {
+.cuebit-marker {
   position: absolute;
   top: 50%;
-  width: 11px;
-  height: 18px;
+  width: 10px;
+  height: 20px;
   padding: 0;
-  border: 2px solid #111827;
+  border: 2px solid #fff;
   border-radius: 999px;
-  background: #a3e635;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 70%);
+  background: linear-gradient(180deg, #ff8a57, #ff6b35);
+  box-shadow: 0 0 0 1px rgb(42 20 10 / 55%), 0 2px 8px rgb(42 20 10 / 70%);
   transform: translate(-50%, -50%);
   cursor: pointer;
   pointer-events: auto;
+  transition: transform 0.15s ease, background 0.15s ease;
 }
 
-.moment-notes-marker:hover,
-.moment-notes-marker:focus-visible {
-  background: #d9f99d;
-  outline: 2px solid white;
+.cuebit-marker:hover,
+.cuebit-marker:focus-visible {
+  background: #fdb98a;
+  transform: translate(-50%, -50%) scale(1.18);
+  outline: 2px solid #fff;
   outline-offset: 2px;
 }
 
-.moment-notes-add-button {
+.cuebit-add-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  align-self: stretch !important;
+  vertical-align: top !important;
   width: 36px !important;
-  color: #f1f5f9 !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  color: #f7f3ee !important;
 }
 
-.moment-notes-add-button:hover,
-.moment-notes-add-button:focus-visible {
-  color: #bef264 !important;
+.cuebit-add-button:hover,
+.cuebit-add-button:focus-visible {
+  color: #ff8a57 !important;
 }
 
-.moment-notes-add-button svg {
+.cuebit-add-button svg {
   width: 21px;
   height: 21px;
   fill: none;
@@ -49,122 +60,155 @@
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
+  flex: none;
+  margin: 0;
+  vertical-align: middle;
 }
 
-#moment-notes-composer {
+#cuebit-composer {
   position: absolute;
   z-index: 999990;
   right: 12px;
   bottom: 58px;
   width: min(340px, calc(100% - 24px));
-  padding: 14px;
-  border: 1px solid rgb(255 255 255 / 12%);
-  border-radius: 14px;
-  background: #101720;
-  color: #f8fafc;
-  font: 13px/1.4 Inter, ui-sans-serif, system-ui, sans-serif;
-  box-shadow: 0 16px 48px rgb(0 0 0 / 55%);
+  padding: 16px;
+  border: 1px solid rgb(58 34 22 / 10%);
+  border-radius: 20px;
+  background:
+    radial-gradient(70% 60% at 0% 0%, rgb(255 138 87 / 40%), transparent 70%),
+    radial-gradient(80% 60% at 100% 100%, rgb(255 107 53 / 32%), transparent 70%),
+    #f7f3ee;
+  color: #3a2216;
+  font: 13px/1.4 "Geist Variable", Geist, ui-sans-serif, system-ui, sans-serif;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 80%), 0 24px 60px rgb(0 0 0 / 50%);
+  animation: cuebit-rise 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.mn-composer-header,
-.mn-composer-header > div,
-.mn-composer-actions {
+@keyframes cuebit-rise {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.cuebit-composer-header,
+.cuebit-composer-header > div,
+.cuebit-composer-actions {
   display: flex;
   align-items: center;
 }
 
-.mn-composer-header,
-.mn-composer-actions {
+.cuebit-composer-header,
+.cuebit-composer-actions {
   justify-content: space-between;
 }
 
-.mn-composer-header strong { font-size: 14px; }
+.cuebit-composer-header strong {
+  color: #2a140a;
+  font: 500 18px/1 Fraunces, ui-serif, Georgia, serif;
+  letter-spacing: -0.01em;
+}
 
-.mn-composer-time {
-  margin-left: 8px;
-  color: #bef264;
+.cuebit-composer-time {
+  margin-left: 10px;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: #f0e4d8;
+  color: #b83e10;
   font: 11px ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 
-.mn-composer-close,
-.mn-composer-cancel,
-.mn-composer-save {
-  min-height: 34px;
+.cuebit-composer-close,
+.cuebit-composer-cancel,
+.cuebit-composer-save {
+  min-height: 36px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 999px;
   cursor: pointer;
   font: inherit;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
-.mn-composer-close {
+.cuebit-composer-close {
   width: 30px;
+  min-height: 30px;
   background: transparent;
-  color: #94a3b8;
+  color: rgb(58 34 22 / 55%);
   font-size: 21px;
 }
 
-.mn-composer-form { margin-top: 10px; }
+.cuebit-composer-close:hover { background: rgb(58 34 22 / 8%); color: #2a140a; }
 
-.mn-composer-text {
+.cuebit-composer-form { margin-top: 12px; }
+
+.cuebit-composer-text {
   display: block;
   width: 100%;
-  min-height: 82px;
+  min-height: 84px;
   resize: vertical;
-  padding: 10px 11px;
-  border: 1px solid rgb(255 255 255 / 12%);
-  border-radius: 9px;
+  padding: 11px 13px;
+  border: 1px solid rgb(58 34 22 / 14%);
+  border-radius: 14px;
   outline: none;
-  background: #080d13;
-  color: #f8fafc;
+  background: rgb(255 255 255 / 75%);
+  color: #2a140a;
   font: inherit;
   box-sizing: border-box;
 }
 
-.mn-composer-text:focus { border-color: #a3e635; }
-.mn-composer-text::placeholder { color: #64748b; }
+.cuebit-composer-text:focus {
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 4px rgb(255 107 53 / 16%);
+}
+.cuebit-composer-text::placeholder { color: rgb(58 34 22 / 40%); }
 
-.mn-composer-hint {
-  margin: 5px 0 0;
-  color: #64748b;
+.cuebit-composer-hint {
+  margin: 6px 0 0;
+  color: rgb(58 34 22 / 50%);
   font-size: 11px;
   text-align: right;
 }
 
-.mn-composer-error {
+.cuebit-composer-error {
   margin: 7px 0 0;
-  color: #fda4af;
+  color: #e11d48;
   font-size: 11px;
 }
 
-.mn-composer-actions { margin-top: 10px; }
+.cuebit-composer-actions { margin-top: 10px; }
 
-.mn-composer-cancel {
-  padding: 0 11px;
+.cuebit-composer-cancel {
+  padding: 0 14px;
   background: transparent;
-  color: #94a3b8;
+  color: rgb(58 34 22 / 65%);
 }
+.cuebit-composer-cancel:hover { background: rgb(58 34 22 / 8%); color: #2a140a; }
 
-.mn-composer-save {
-  padding: 0 13px;
-  background: #bef264;
-  color: #111827;
+.cuebit-composer-save {
+  padding: 0 18px;
+  background: #ff6b35;
+  color: #2a140a;
   font-weight: 700;
+  box-shadow: 0 8px 20px -8px rgb(255 107 53 / 70%);
 }
+.cuebit-composer-save:hover:not(:disabled) { background: #ff8a57; }
+.cuebit-composer-save:disabled { opacity: 0.55; cursor: default; }
 
-.mn-composer-save:disabled { opacity: .6; cursor: default; }
-
-#moment-notes-toast {
+#cuebit-toast {
   position: fixed;
   z-index: 999999;
   right: 24px;
   bottom: 84px;
   max-width: min(420px, calc(100vw - 48px));
-  padding: 12px 16px;
-  border: 1px solid rgb(163 230 53 / 45%);
-  border-radius: 12px;
-  background: #111827;
-  color: #f9fafb;
-  font: 500 14px/1.5 system-ui, sans-serif;
-  box-shadow: 0 12px 36px rgb(0 0 0 / 35%);
+  padding: 12px 18px;
+  border: 1px solid rgb(58 34 22 / 10%);
+  border-radius: 999px;
+  background: #f7f3ee;
+  color: #2a140a;
+  font: 500 14px/1.5 "Geist Variable", Geist, system-ui, sans-serif;
+  box-shadow: 0 14px 40px rgb(0 0 0 / 40%), 0 0 0 2px rgb(255 107 53 / 55%);
+  animation: cuebit-rise 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  #cuebit-composer, #cuebit-toast { animation: none; }
+  .cuebit-marker { transition: none; }
+}

@@ -7,12 +7,19 @@ export default defineConfig({
     plugins: [tailwindcss()],
   }),
   manifest: {
-    name: 'YouTube Moment Notes',
+    name: 'CueBit',
     description: 'Save timestamped notes on YouTube videos.',
+    icons: { 16: 'icon/16.png', 32: 'icon/32.png', 48: 'icon/48.png', 96: 'icon/96.png', 128: 'icon/128.png' },
     permissions: ['activeTab', 'scripting'],
     host_permissions: ['https://www.youtube.com/*'],
+    commands: {
+      'add-note': {
+        suggested_key: { default: 'Alt+Shift+N', mac: 'Alt+Shift+N' },
+        description: 'Add a note at the current video time',
+      },
+    },
     action: {
-      default_title: 'YouTube Moment Notes',
+      default_title: 'CueBit',
     },
   },
 });

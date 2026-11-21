@@ -8,11 +8,12 @@
 4. Wait for the video player to appear and reopen the popup.
 5. If it still fails, open the extension's service worker inspection page from the extensions page and check the Console for an error. Include the error text and browser version when filing an issue; remove any private information first.
 
-## Player pin button or seek-bar markers are missing
+## Player bookmark button, shortcut, or seek-bar markers are missing
 
 - Use the production build or keep the WXT development process running.
 - Make sure the unpacked extension points at `.output/chrome-mv3` and has no error shown on the extensions page.
 - Refresh the YouTube watch tab after installing, updating, or reloading the extension.
+- If `Alt+Shift+N` does nothing, open `chrome://extensions/shortcuts` (or the matching page in your browser) and check that CueBit's shortcut is assigned; another extension may already use the same keys. The `B` key only works when you are not typing in a text field.
 - YouTube changes its player markup occasionally. If the popup works but the player controls do not, report the browser version, video page type, and reproducible steps.
 
 ## Notes do not appear in another browser

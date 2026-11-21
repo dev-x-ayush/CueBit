@@ -13,16 +13,18 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export function Button({ className, variant = 'primary', size = 'md', ...props }: ButtonProps) {
   const variants = {
-    primary: 'bg-lime-300 text-slate-950 hover:bg-lime-200 focus-visible:ring-lime-300',
-    secondary: 'border border-white/10 bg-white/[0.06] text-slate-100 hover:bg-white/10 focus-visible:ring-white/30',
-    ghost: 'bg-transparent text-slate-400 hover:bg-white/[0.06] hover:text-white focus-visible:ring-white/30',
-    danger: 'bg-rose-400/10 text-rose-300 hover:bg-rose-400/20 focus-visible:ring-rose-300',
+    primary:
+      'bg-ember-500 text-cocoa-950 shadow-[0_10px_24px_-8px_rgb(255_107_53/0.7)] hover:bg-ember-400 hover:-translate-y-px active:translate-y-0 focus-visible:ring-ember-500/60',
+    secondary:
+      'border border-cocoa-900/12 bg-white/60 text-cocoa-900 hover:border-cocoa-900/25 hover:bg-white focus-visible:ring-ember-500/50',
+    ghost: 'bg-transparent text-cocoa-900/60 hover:bg-cocoa-900/[0.06] hover:text-cocoa-950 focus-visible:ring-ember-500/50',
+    danger: 'bg-transparent text-cocoa-900/45 hover:bg-rose-500/10 hover:text-rose-600 focus-visible:ring-rose-500',
   };
   return (
     <button
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-45',
-        size === 'sm' ? 'min-h-9 px-3 text-xs' : 'min-h-11 px-4 text-sm',
+        'inline-flex cursor-pointer items-center justify-center gap-2 rounded-full font-semibold tracking-tight transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-cream-100 disabled:pointer-events-none disabled:opacity-40',
+        size === 'sm' ? 'min-h-9 px-3.5 text-xs' : 'min-h-11 px-5 text-sm',
         variants[variant],
         className,
       )}

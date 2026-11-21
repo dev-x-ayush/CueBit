@@ -1,11 +1,15 @@
-# Security policy
-
-## Supported versions
-
-Security reports are accepted for the latest version on the default branch.
+# Security Policy
 
 ## Reporting a vulnerability
 
-Please do not publish exploitable details in a public issue. If GitHub private vulnerability reporting is enabled for this repository, use it. Otherwise, contact the repository owner through GitHub to arrange a private report. Include the affected version, impact, and steps to reproduce when safe to do so.
+Open a public issue or report privately through GitHub's **Report a vulnerability** option on the Security tab of this repository, or email adityavermax7@gmail.com / ak2020192187909157@gmail.com.
 
-This project stores notes locally and has no hosted account or backend service. Avoid sharing personal notes or browser profile data in a report.
+Include steps to reproduce and the impact. Expect an initial response within 7 days. Please do not include your personal notes or browser profile data in a report.
+
+## Scope
+
+CueBit requests only `activeTab`, `scripting` and access to `https://www.youtube.com/*`, and makes no network requests of its own. Reports about the extension reading or sending data it should not, or being driven by a malicious page, are in scope.
+
+## Supported versions
+
+Only the latest release on the `main` branch receives fixes.

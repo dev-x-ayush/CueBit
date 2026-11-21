@@ -1,100 +1,119 @@
-# YouTube Moment Notes
+# CueBit
 
-Save a short note at an exact point in a YouTube video, then return to it from the player or your private library. Notes are stored locally in your browser profile using IndexedDB. There is no account, server, or subscription.
+CueBit is a browser extension that saves a short note at an exact point in a YouTube video, so you can return to it from the player or from your private library.
+
+![CueBit popup](docs/screenshot.png)
+![CueBit popup](docs/dashboard-screenshot.png)
 
 ## Features
 
-- Save the current video time from the extension popup.
-- Save a note from a pin button beside YouTube's player controls, with an inline note form.
-- See saved moments on the seek bar and click a marker to jump to that time.
-- Browse, search, open, and delete notes in a separate library page.
-- View saved moments in a timeline visualization.
-- Store note text and video details locally in IndexedDB.
+- Save the current video time and a note from the extension popup
+- Save from a bookmark button beside YouTube's player controls, with an inline note form
+- Keyboard shortcuts: `B` on the video page, or `Alt+Shift+N` from anywhere on the tab (rebind at `chrome://extensions/shortcuts`)
+- Saved moments appear as markers on the seek bar; click one to jump to that time
+- Library page to browse, search, open, and delete notes, with a timeline visualization
+- Warm cream and orange interface across the popup, library, and player overlay
+- Notes are stored locally in IndexedDB. No account, server, or subscription
 
-## Requirements
+## Install
 
-- A desktop Chromium browser such as Chrome, Brave, or Microsoft Edge.
-- Node.js 20 or newer and npm for building from source. A current LTS release is recommended.
-- Git to clone the source repository.
-- YouTube access for using the extension. The extension needs access to `https://www.youtube.com/*` to read the current video and add timeline controls.
+CueBit is not on the Chrome Web Store, so you load it unpacked.
 
-This project is a browser extension, not a hosted web service or an npm package. No backend, database server, login, API key, or Python installation is required.
+### Option 1: Download the release (no build needed)
 
-## Install from source
+1. Download `cuebit-<version>-chrome.zip` from the [Releases](../../releases) page and extract it.
+2. Open `chrome://extensions` (or `brave://extensions`, `edge://extensions`) and turn on **Developer mode**.
+3. Click **Load unpacked** and select the extracted folder (the one containing `manifest.json`).
+4. Pin CueBit to your toolbar, then reload any YouTube tab that was already open.
 
-1. Clone or download this repository.
-2. In a terminal, change into the project folder.
-3. Install dependencies and create a production build:
+> Chrome can't load a zip directly with **Load unpacked**, so extract it first.
+
+### Option 2: Build from source
+
+You need Node.js 20 or newer and Git.
+
+1. Clone this repository.
+2. Install dependencies and build:
 
    ```sh
    npm install
    npm run build
    ```
 
-4. Open the browser's extensions page:
-   - Chrome: `chrome://extensions`
-   - Brave: `brave://extensions`
-   - Edge: `edge://extensions`
-5. Turn on **Developer mode**.
-6. Select **Load unpacked** and choose the generated `.output/chrome-mv3` folder inside the project.
-7. Open or reload a YouTube video tab. If it was already open, refresh the page so the extension can attach its player controls.
+3. Open `chrome://extensions` (or `brave://extensions`, `edge://extensions`) and turn on **Developer mode**.
+4. Click **Load unpacked** and select the generated `.output/chrome-mv3` folder.
+5. Pin CueBit to your toolbar, then reload any YouTube tab that was already open.
 
-For local development with automatic rebuilds, run `npm run dev`, then load the development output folder WXT reports (usually `.output/chrome-mv3`). Keep the process running and reload the extension and YouTube tab after source changes.
+## Use
 
-The build output is generated. Do not edit files in `.output` directly; edit the source files and rebuild.
+1. Open a YouTube video (`youtube.com/watch?v=...`).
+2. Click the bookmark button beside the player controls, press `B`, press `Alt+Shift+N`, or open the CueBit popup.
+3. Type a short note and choose **Save note** (or press `Ctrl+Enter`).
+4. A marker appears on the seek bar. Click it later to jump back to that moment.
 
-## Use the extension
+Open **Library** in the popup to search notes by text or video title, open a note at its saved time, or delete it. Deletion is immediate.
 
-### Save from the YouTube player
+## Good to know
 
-1. Open a regular YouTube video page (`youtube.com/watch?v=...`).
-2. Use the pin button beside the player controls.
-3. Enter a short note in the form over the video and choose **Save note**.
-4. A marker appears on the video's seek bar. Click it later to jump to that moment and display the note.
+- Works on desktop Chromium browsers such as Chrome, Brave, and Edge. A Firefox build is available with `npm run build:firefox` but has not been tested.
+- Notes belong to one browser profile and do not sync between browsers or computers.
+- Removing the extension or clearing its data can delete your notes. Export and import are not included yet.
+- YouTube may change its page layout, which can affect the player button or markers.
+- Common setup problems are covered in [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
 
-### Save from the extension popup
+## How it works
 
-1. Start or pause the video at the point you want to remember.
-2. Select the Moment Notes extension icon in the browser toolbar.
-3. Enter a note and choose **Save at [time]**.
+A content script runs on `youtube.com`. It reads the current video and time, adds the player button, note form, and seek-bar markers, and sends note operations to the extension's background worker. The worker writes notes to an IndexedDB database named `youtube-moment-notes`, which the popup and library read.
 
-### Find, open, and delete notes
+## Privacy
 
-- Select **Library** in the popup to open the full notes page.
-- Search by note text or video title.
-- Select a note to open its video at the saved time.
-- Select the trash icon beside a note to delete it. Deletion is immediate.
-- The popup also shows recent notes for the currently open video.
+CueBit runs entirely in your browser. It has no server, no analytics, and sends no data anywhere. See [PRIVACY.md](PRIVACY.md).
 
-## Data, privacy, and storage
+## Permissions
 
-- Notes are stored in the browser extension's IndexedDB database, named `youtube-moment-notes`.
-- The database contains note text, video ID/title/URL, timestamp in seconds, and creation/update times.
-- The extension has no network service or account and does not upload notes.
-- Data belongs to the browser profile and extension installation. Chrome, Brave, and Edge have separate profiles/storage; notes do not automatically sync between browsers or computers.
-- Removing the extension or clearing its site/extension data can remove the notes. Back up important notes before uninstalling; export/import is not currently included.
+| Permission | Why it is needed |
+|---|---|
+| `activeTab`, `scripting` | Read the video and time on the tab you are using |
+| Access to `https://www.youtube.com/*` | Add the player button, note form, and seek-bar markers |
 
 ## Development
 
 ```sh
-npm install
-npm run dev          # Chromium development build
+npm run dev          # Chromium development build with rebuilds
 npm run build        # Chromium production build
 npm run zip          # Package the production build
 npm run dev:firefox  # Firefox development build
 npm run build:firefox
 ```
 
-WXT builds the extension from `entrypoints/` and writes generated files under `.output/`. The source uses TypeScript, React, Tailwind CSS, `idb` for IndexedDB access, Day.js for date formatting, and Plotly.js for the library timeline.
+Built with WXT, TypeScript, React, Tailwind CSS, `idb`, Day.js, and Plotly.js. Generated output goes to `.output/` and is git-ignored. After changes, reload the extension and the YouTube tab. See [docs/PROJECT-GUIDE.md](docs/PROJECT-GUIDE.md) and [docs/DESIGN.md](docs/DESIGN.md) for more.
 
-## Project files
+### Project layout
 
-See [docs/PROJECT-GUIDE.md](docs/PROJECT-GUIDE.md) for the directory map and details on which files are source, configuration, dependencies, and generated output. See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) for common browser setup issues.
+```
+entrypoints/   Background worker, popup, library dashboard, YouTube content script
+src/           Shared components, database, messaging, types, styles
+public/icon/   Extension icons
+docs/          Design, project, and troubleshooting guides
+wxt.config.ts  WXT setup and manifest (permissions, icons, shortcut)
+```
 
 ## Contributing
 
-Issues and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before making changes. This project is licensed under the MIT License; see [LICENSE](LICENSE).
+Issues and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
-## Trademark notice
+## Security
 
-YouTube and Google are trademarks of Google LLC. This independent project is not affiliated with, endorsed by, or sponsored by Google LLC. Product names are used only to describe compatibility. No third-party watermark or endorsement is implied.
+To report a vulnerability, see [SECURITY.md](SECURITY.md).
+
+## Disclaimer
+
+CueBit is an independent project and is not affiliated with, endorsed by, or sponsored by YouTube or Google. YouTube and Google are trademarks of Google LLC.
+
+## Credits
+
+CueBit is a redesign of the original [YouTube Moment Notes](https://github.com/dev-x-ayush/Youtube-moments-bookmarks) extension by dev-x-ayush, with a new design, theme, branding, and bug fixes.
+
+## License
+
+Code is released under the [MIT License](LICENSE). The bundled fonts (Fraunces, Geist, JetBrains Mono) are licensed under the SIL Open Font License 1.1; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
